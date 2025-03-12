@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '@nnpp/database';
 import { config, validate } from './config';
 import { DomainModule } from './domain/domain.module';
-
 @Module({
   imports: [
     ConfigModule.forRoot({

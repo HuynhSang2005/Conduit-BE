@@ -4,6 +4,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from '../config';
+import { ArticleModule } from './article/article.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { config } from '../config';
       signOptions: { expiresIn: config.jwt.expiresIn },
     }),
     UserModule,
+    ArticleModule,
   ],
   providers: [
     {
