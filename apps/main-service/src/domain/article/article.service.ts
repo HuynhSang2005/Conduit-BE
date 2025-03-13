@@ -7,20 +7,31 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { DatabaseService } from '@nnpp/database';
 import { createSlug } from 'libs/helper/create.slug';
-import { SingleArticleResponseWrapperDto } from './dto/article.respone.dto';
+import { TagsResponseDto } from './dto/tag.respone.dto';
 
 @Injectable()
 export class ArticleService {
   constructor(private readonly databaseService: DatabaseService) {}
 
+  async getBySlug(slug: string) {
+    const article = this.databaseService.article.findUnique({
+      where: { slug },
+    });
+    // check article có tồn tại hay không?
+    if (!article) {
+      // throw status code 404
+      throw new NotFoundException('Article not found');
+    }
+
+    return article;
+  }
   async createArticle(data: CreateArticleDto, userId: number) {
     const { title, description, body, tagList } = data;
 
     let slug = createSlug(title);
 
-    const exitedSlug = this.databaseService.article.findUnique({
-      where: { slug },
-    });
+    const exitedSlug = this.getBySlug(slug);
+
     if (exitedSlug) {
       slug = `${slug}-${Date.now()}`;
     }
@@ -46,48 +57,26 @@ export class ArticleService {
   }
 
   // Get an article by slug
-  async getBySlug(slug: string) {
-    const article = this.databaseService.article.findUnique({
-      where: { slug },
-      include: {
-        author: true,
-        tagList: true,
-        favoritedBy: true,
-        _count: {
-          select: { favoritedBy: true },
-        },
-      },
-    });
-    // check article có tồn tại hay không?
-    if (!article) {
-      // throw status code 404
-      throw new NotFoundException('Article not found');
-    }
-
-    return article;
-  }
 
   async updateArticle(
     slug: string,
     updateData: UpdateArticleDto,
     userId: number,
-  ): Promise<any> {
-    // Tìm bài viết theo slug
+  ) {
     const article = await this.getBySlug(slug);
 
-    // Kiểm tra bài viết tồn tại
     if (!article) {
       throw new NotFoundException('Article not found');
     }
 
-    // Kiểm tra quyền - chỉ tác giả mới được phép cập nhật
+    // Check authorization - chỉ author mới được phép cập nhật
     if (article.authorId !== userId) {
       throw new ForbiddenException(
         'You are not authorized to update this article',
       );
     }
 
-    // Chuẩn bị dữ liệu cập nhật - chỉ lấy các trường được cung cấp
+    // Chuẩn bị dữ liệu cập nhật - chỉ lấy các filed được cung cấp
     const updateFields: any = {};
 
     if (updateData.title) updateFields.title = updateData.title;
@@ -95,7 +84,7 @@ export class ArticleService {
       updateFields.description = updateData.description;
     if (updateData.body) updateFields.body = updateData.body;
 
-    // Xử lý slug nếu title thay đổi
+    // Handle slug nếu title thay đổi
     if (updateData.title && updateData.title !== article.title) {
       updateFields.slug = createSlug(updateData.title);
     }
@@ -152,7 +141,7 @@ export class ArticleService {
       throw new NotFoundException('Article not found');
     }
 
-    // Kiểm tra quyền - chỉ tác giả mới được phép xóa
+    // check authorization - chỉ author mới được phép xóa
     if (article.authorId !== userId) {
       throw new ForbiddenException(
         'You are not authorized to delete this article',
@@ -163,5 +152,22 @@ export class ArticleService {
       where: { id: article.id },
     });
     return;
+  }
+
+  // Thêm vào ArticleService
+  async getAllTags(): Promise<TagsResponseDto> {
+    // Lấy tất cả các tag từ database
+    const tags = await this.databaseService.tag.findMany({
+      select: {
+        name: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+
+    return {
+      tags: tags.map((tag) => tag.name),
+    };
   }
 }

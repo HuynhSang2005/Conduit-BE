@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
@@ -11,10 +10,7 @@ import {
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { RequestCreateArticleDto } from './dto/create-article.dto';
-import {
-  RequestUpdateArticleDto,
-  UpdateArticleDto,
-} from './dto/update-article.dto';
+import { RequestUpdateArticleDto } from './dto/update-article.dto';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -22,8 +18,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ApiOperationDecorator, Public } from '@nnpp/decorators';
-import { SingleArticleResponseWrapperDto } from './dto/article.respone.dto';
-import { Article } from '@prisma/client';
 import { Identity } from '@nnpp/decorators/identity.decorator';
 
 @ApiBearerAuth()
@@ -66,7 +60,7 @@ export class ArticleController {
     @Param('slug') slug: string,
     @Body() requestUpdateDto: RequestUpdateArticleDto,
     @Identity('id') userId: number,
-  ): Promise<SingleArticleResponseWrapperDto> {
+  ) {
     return this.articleService.updateArticle(
       slug,
       requestUpdateDto.article,
@@ -74,7 +68,8 @@ export class ArticleController {
     );
   }
 
-  @ApiOperation({
+  @ApiOperationDecorator({
+    operationId: 'deleteArticle',
     summary: 'Delete article',
     description: 'Delete an article. Auth required',
   })
