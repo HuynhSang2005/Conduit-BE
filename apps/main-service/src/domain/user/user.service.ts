@@ -11,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { config } from '../../config';
 import { LoginDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { hashPassword } from 'libs/helper/hashing-password';
 
 @Injectable()
 export class UserService {
@@ -37,7 +38,7 @@ export class UserService {
       data: {
         email: data.email,
         username: data.username,
-        password: data.password,
+        password: await hashPassword(data.password),
       },
     });
   }
@@ -48,7 +49,7 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
-    if (foundUser.password !== data.password) {
+    if (foundUser.password !== (await hashPassword(data.password))) {
       throw new UnprocessableEntityException('Invalid password');
     }
 
@@ -69,14 +70,20 @@ export class UserService {
       }
     }
 
+    const updateData: any = {
+      username: data.username,
+      bio: data.bio,
+      image: data.image,
+    };
+
+    // Nếu có thay đổi mật khẩu, hashing mật khẩu mới
+    if (data.password) {
+      updateData.password = await hashPassword(data.password);
+    }
+
     return this.databaseService.user.update({
       where: { id: userId },
-      data: {
-        username: data.username,
-        password: data.password,
-        bio: data.bio,
-        image: data.image,
-      },
+      data: updateData,
     });
   }
 

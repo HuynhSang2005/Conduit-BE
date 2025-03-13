@@ -20,7 +20,7 @@ export class AuthorResponseDto {
     description: 'Bio of the author',
     type: String,
     nullable: true,
-    example: 'I work at statefarm',
+    example: 'I work at ...',
   })
   bio: string | null;
 

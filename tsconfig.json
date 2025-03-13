@@ -17,37 +17,18 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
     "paths": {
-      "@nnpp/decorators": [
-        "libs/decorators/src"
-      ],
-      "@nnpp/decorators/*": [
-        "libs/decorators/src/*"
-      ],
-      "@nnpp/setup": [
-        "libs/setup/src"
-      ],
-      "@nnpp/setup/*": [
-        "libs/setup/src/*"
-      ],
-      "@nnpp/interceptors": [
-        "libs/interceptors/src"
-      ],
-      "@nnpp/interceptors/*": [
-        "libs/interceptors/src/*"
-      ],
-      "@nnpp/database": [
-        "libs/database/src"
-      ],
-      "@nnpp/database/*": [
-        "libs/database/src/*"
-      ],
-      "@nnpp/constants": [
-        "libs/constants/src"
-      ],
-      "@nnpp/constants/*": [
-        "libs/constants/src/*"
-      ]
+      "@nnpp/decorators": ["libs/decorators/src"],
+      "@nnpp/decorators/*": ["libs/decorators/src/*"],
+      "@nnpp/setup": ["libs/setup/src"],
+      "@nnpp/setup/*": ["libs/setup/src/*"],
+      "@nnpp/interceptors": ["libs/interceptors/src"],
+      "@nnpp/interceptors/*": ["libs/interceptors/src/*"],
+      "@nnpp/database": ["libs/database/src"],
+      "@nnpp/database/*": ["libs/database/src/*"],
+      "@nnpp/constants": ["libs/constants/src"],
+      "@nnpp/constants/*": ["libs/constants/src/*"]
     }
   }
 }
