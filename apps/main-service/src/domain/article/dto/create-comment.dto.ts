@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 
 // DTO cho request tạo comment
 export class CreateCommentDto {
@@ -19,6 +25,7 @@ export class RequestCreateCommentDto {
     description: 'Comment to be created',
     type: CreateCommentDto,
   })
+  @IsNotEmpty()
   comment: CreateCommentDto;
 }
 
@@ -29,6 +36,8 @@ export class CommentAuthorDto {
     type: String,
     example: 'jake',
   })
+  @IsString()
+  @IsNotEmpty()
   username: string;
 
   @ApiProperty({
@@ -47,12 +56,14 @@ export class CommentAuthorDto {
   })
   image: string | null;
 
-  @ApiProperty({
-    description: 'Whether the current user follows this commenter',
-    type: Boolean,
-    example: false,
-  })
-  following: boolean;
+  // @ApiProperty({
+  //   description: 'Whether the current user follows this commenter',
+  //   type: Boolean,
+  //   example: false,
+  // })
+  // @IsNotEmpty()
+  // @IsBoolean()
+  // following: boolean;
 }
 
 // DTO cho response của comment
@@ -62,6 +73,8 @@ export class CommentResponseDto {
     type: Number,
     example: 1,
   })
+  @IsNotEmpty()
+  @IsNumber()
   id: number;
 
   @ApiProperty({
@@ -69,6 +82,8 @@ export class CommentResponseDto {
     type: Date,
     example: '2025-02-18T03:22:56.637Z',
   })
+  @IsNotEmpty()
+  @IsDate()
   createdAt: Date;
 
   @ApiProperty({
@@ -76,6 +91,8 @@ export class CommentResponseDto {
     type: Date,
     example: '2025-02-18T03:22:56.637Z',
   })
+  @IsNotEmpty()
+  @IsDate()
   updatedAt: Date;
 
   @ApiProperty({
@@ -83,12 +100,15 @@ export class CommentResponseDto {
     type: String,
     example: 'It takes a Jacobian',
   })
+  @IsNotEmpty()
+  @IsString()
   body: string;
 
   @ApiProperty({
     description: 'Author of the comment',
     type: CommentAuthorDto,
   })
+  @IsNotEmpty()
   author: CommentAuthorDto;
 }
 

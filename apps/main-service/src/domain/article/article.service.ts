@@ -7,7 +7,7 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { DatabaseService } from '@nnpp/database';
 import { createSlug } from 'libs/helper/create.slug';
-import { TagsResponseDto } from './dto/tag.respone.dto';
+import { TagsResponseDto } from './dto/tag.response.dto';
 
 @Injectable()
 export class ArticleService {

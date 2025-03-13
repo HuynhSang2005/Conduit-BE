@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ArticleService } from './article.service';
 import { ApiOperationDecorator } from '@nnpp/decorators';
-import { TagsResponseDto } from './dto/tag.respone.dto';
+import { TagsResponseDto } from './dto/tag.response.dto';
 
 @ApiTags('Tags')
 @Controller('tags')

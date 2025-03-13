@@ -11,12 +11,7 @@ import {
 import { ArticleService } from './article.service';
 import { RequestCreateArticleDto } from './dto/create-article.dto';
 import { RequestUpdateArticleDto } from './dto/update-article.dto';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ApiOperationDecorator, Public } from '@nnpp/decorators';
 import { Identity } from '@nnpp/decorators/identity.decorator';
 

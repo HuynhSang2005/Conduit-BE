@@ -1,4 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsArray,
+  IsBoolean,
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 
 export class AuthorResponseDto {
   @ApiProperty({
@@ -20,7 +28,7 @@ export class AuthorResponseDto {
     description: 'Image of the author',
     type: String,
     nullable: true,
-    example: 'https://api.realworld.io/images/smiley-cyrus.jpeg',
+    example: 'test.img',
   })
   image: string | null;
 
@@ -38,6 +46,8 @@ export class ArticleResponseDto {
     type: String,
     example: 'how-to-train-your-dragon',
   })
+  @IsNotEmpty()
+  @IsString()
   slug: string;
 
   @ApiProperty({
@@ -45,6 +55,8 @@ export class ArticleResponseDto {
     type: String,
     example: 'How to train your dragon',
   })
+  @IsNotEmpty()
+  @IsString()
   title: string;
 
   @ApiProperty({
@@ -52,6 +64,8 @@ export class ArticleResponseDto {
     type: String,
     example: 'Ever wonder how?',
   })
+  @IsNotEmpty()
+  @IsString()
   description: string;
 
   @ApiProperty({
@@ -59,6 +73,8 @@ export class ArticleResponseDto {
     type: String,
     example: 'It takes a Jacobian',
   })
+  @IsNotEmpty()
+  @IsString()
   body: string;
 
   @ApiProperty({
@@ -66,6 +82,8 @@ export class ArticleResponseDto {
     type: [String],
     example: ['dragons', 'training'],
   })
+  @IsNotEmpty()
+  @IsArray()
   tagList: string[];
 
   @ApiProperty({
@@ -73,6 +91,8 @@ export class ArticleResponseDto {
     type: Date,
     example: new Date(),
   })
+  @IsNotEmpty()
+  @IsDate()
   createdAt: Date;
 
   @ApiProperty({
@@ -80,6 +100,8 @@ export class ArticleResponseDto {
     type: Date,
     example: new Date(),
   })
+  @IsNotEmpty()
+  @IsDate()
   updatedAt: Date;
 
   @ApiProperty({
@@ -87,16 +109,21 @@ export class ArticleResponseDto {
     type: Boolean,
     example: false,
   })
+  @IsNotEmpty()
+  @IsBoolean()
   favorited: boolean;
 
-  @ApiProperty({
-    description: 'Favorites count of article',
-    type: Number,
-    example: 0,
-  })
-  favoritesCount: number;
+  // @ApiProperty({
+  //   description: 'Favorites count of article',
+  //   type: Number,
+  //   example: 0,
+  // })
+  // @IsNotEmpty()
+  // @IsNumber()
+  // favoritesCount: number;
 
   @ApiProperty({ type: AuthorResponseDto })
+  @IsNotEmpty()
   author: AuthorResponseDto;
 }
 
@@ -110,17 +137,17 @@ export class SingleArticleResponseWrapperDto {
 }
 
 // Wrapper DTO cho response nhiều article
-export class MultipleArticlesResponseWrapperDto {
-  @ApiProperty({
-    description: 'List of articles',
-    type: [ArticleResponseDto],
-  })
-  articles: ArticleResponseDto[];
+// export class MultipleArticlesResponseWrapperDto {
+//   @ApiProperty({
+//     description: 'List of articles',
+//     type: [ArticleResponseDto],
+//   })
+//   articles: ArticleResponseDto[];
 
-  @ApiProperty({
-    description: 'Articles count',
-    type: Number,
-    example: 10,
-  })
-  articlesCount: number;
-}
+//   @ApiProperty({
+//     description: 'Articles count',
+//     type: Number,
+//     example: 10,
+//   })
+//   articlesCount: number;
+// }
